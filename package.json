@@ -1,0 +1,24 @@
+{
+  "name": "musicapp",
+  "version": "1.0.0",
+  "description": "online music app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beky02/music-app.git"
+  },
+  "author": "bereket",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beky02/music-app/issues"
+  },
+  "homepage": "https://github.com/beky02/music-app#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "nodemon": "^1.19.1"
+  }
+}
