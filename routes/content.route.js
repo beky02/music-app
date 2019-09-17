@@ -40,15 +40,14 @@ routes.post('/add', (req, res) => {
 
 // content edit
 
-routes.patch('/edit/:Id', (req, res) => {
+routes.put('/edit/:id', (req, res) => {
      if (req.body.content && req.body.keyword) {
-
         let content = {
             "keyword": req.body.keyword,
             "content": req.body.content,
         };
 
-        Content.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.Id), {
+        Content.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id), {
             $set: content
         }, {
                 new: true
@@ -105,6 +104,23 @@ routes.get('/all', (req, res) => {
 
             res.status(200).json({
                 content: contents
+
+            });
+        }, function (err) {
+            res.status(501).json({
+                "error": err
+            });
+        });
+
+});
+
+routes.get('/view/:id', (req, res) => {
+   
+    Content.findById(mongoose.Types.ObjectId(req.params.id))
+        .then(function (contents) {
+
+            res.status(200).json({
+                 contents
 
             });
         }, function (err) {

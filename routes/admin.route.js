@@ -13,6 +13,7 @@ const routes = express.Router();
 
 const admin = require('../models/admin');
 const user = require('../models/user');
+const RegUsers = require('../models/regusers');
 
 /*
  * To signup a admin
@@ -221,3 +222,81 @@ routes.post('/add', passport.authenticate('jwt', { session: false }), (req, res)
         });
     }
 });
+
+routes.get('/all', (req, res) => {
+
+    RegUsers.find({})
+        .then(function (users) {
+            // console.log(users);
+            res.status(200).json({
+               users
+            });
+
+        }, function (err) {
+            res.status(501).json({
+                "error": err
+            });
+        });
+
+});
+routes.get('/search',(req,res)=>{
+    if (req.query.mobile) {
+        RegUsers.findOne({ mobile: req.query.mobile }, (err, user) => {
+            if (err) {
+                res.status(500).json({
+                    error: err
+                });
+            } else if (user == null) {
+                res.status(400).json({
+                    result: 'user not found'
+                });
+            }
+            else {
+                res.status(200).json({
+                   user
+                });
+            }
+        })
+    } else {
+        res.status(400).json({
+            message: 'one or more parameters missing'
+        });
+    }
+   
+});
+routes.put('/delete',(req,res)=>{
+    if (req.query.mobile && req.body.services) {
+        RegUsers.findOneAndUpdate({ mobile: req.query.mobile }, 
+            {
+                $pull: {
+                    subcriptions: {
+                        $in: req.body.services
+                    }
+                    
+                }
+            }
+            ,(err, user) => {
+            if (err) {
+                res.status(500).json({
+                    error: err
+                });
+            } else if (user == null) {
+                res.status(400).json({
+                    result: 'user not found'
+                });
+            }
+            else {
+                res.status(200).json({
+                   user
+                });
+            }
+        })
+    } else {
+        res.status(400).json({
+            message: 'one or more parameters missing'
+        });
+    }
+   
+});
+
+module.exports = routes;
