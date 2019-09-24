@@ -117,6 +117,50 @@ routes.post('/signup', (req, res) => {
     }
 });
 
+// admin login in
+routes.post('/login', (req, res) => {
+    if (req.body.email && req.body.password) {
+        req.assert('email', 'Email is not valid').isEmail();
+        req.assert('password', 'Password cannot be blank').notEmpty();
+        req.sanitize('email').normalizeEmail({
+            gmail_remove_dots: false
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return res.status(400).send(error)
+        }
+        console.log(req.body);
+        passport.authenticate('admin', (err, user, info) => {
+            if (err) {
+                return res.status(500).json({
+                    error: err
+                });
+            }
+            if (!user) {
+                return res.status(400).json({
+                    response: info
+                });
+            }
+            console.log("check passport");
+            req.login(user, { session: false }, (err) => {
+                console.log(err);
+                if (err) {
+                    return res.status(500).json({
+                        error: err
+                    });
+                }
+                console.log('req.user ', req.user);
+                const token = jwt.sign({ id: user.id }, 'kalu@198802', { expiresIn: 36000 });
+                return res.status(200).json({ user, 'token': token });
+            });
+        })(req, res);
+    } else {
+        res.status(400).json({
+            error: 'one or more parameter missing'
+        });
+    }
+});
 // admin add user 
 
 routes.post('/add', passport.authenticate('jwt', { session: false }), (req, res) => {
