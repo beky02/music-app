@@ -1,7 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 const RegUsers = require('../models/regusers');
-const MessageOut3 = require('../models/messageout3');
+const SubscrubeMessageOut = require('../models/subscrubeMessageOut');
 const mongoose = require('mongoose');
 
 routes.post('/ok', (req, res) => {
@@ -31,7 +31,7 @@ routes.post('/ok', (req, res) => {
                     "messageTo": req.body.mobile,
                     "messageFrom": "6008",
                 };
-                MessageOut3.create(message3, (err, Mesdoc) => {
+                SubscrubeMessageOut.create(message3, (err, Mesdoc) => {
                     if (err) {
                         RegUsers.findByIdAndRemove(mongoose.Types.ObjectId(Regdoc._id), (err, content) => {
                             if (err) {
