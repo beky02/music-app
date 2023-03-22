@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var MessageOut3 = new Schema({
+var SubscrubeMessageOut = new Schema({
    messageTo: {
        type: Number,
        required: true,
@@ -25,4 +25,4 @@ var MessageOut3 = new Schema({
 
 });
 
-module.exports = mongoose.model('MessageOut3',MessageOut3);
+module.exports = mongoose.model('SubscrubeMessageOut',SubscrubeMessageOut);
